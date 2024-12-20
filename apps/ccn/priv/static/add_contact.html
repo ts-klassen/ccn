@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Contact</title>
+</head>
+<body>
+    <h1>Add New Contact</h1>
+    <form action="/add_contact" method="post">
+        <input type="hidden" name="company_id" value="{{company_id}}">
+        
+        <label for="first_name">First Name:</label><br>
+        <input type="text" id="first_name" name="first_name" required><br><br>
+        
+        <label for="last_name">Last Name:</label><br>
+        <input type="text" id="last_name" name="last_name" required><br><br>
+        
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br><br>
+        
+        <label for="type">Type:</label><br>
+        <input type="text" id="type" name="type"><br><br>
+        
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="phone_number">Phone Number:</label><br>
+        <input type="tel" id="phone_number" name="phone_number"><br><br>
+        
+        <label for="mobile_number">Mobile Number:</label><br>
+        <input type="tel" id="mobile_number" name="mobile_number"><br><br>
+        
+        <h3>Branch Address</h3>
+        <label for="street1">Street 1:</label><br>
+        <input type="text" id="street1" name="branch[0][street1]"><br><br>
+        
+        <label for="street2">Street 2:</label><br>
+        <input type="text" id="street2" name="branch[0][street2]"><br><br>
+        
+        <label for="suburb">Suburb:</label><br>
+        <input type="text" id="suburb" name="branch[0][suburb]"><br><br>
+        
+        <label for="state">State:</label><br>
+        <input type="text" id="state" name="branch[0][state]"><br><br>
+        
+        <label for="post_code">Post Code:</label><br>
+        <input type="text" id="post_code" name="branch[0][post_code]"><br><br>
+        
+        <label for="country">Country:</label><br>
+        <input type="text" id="country" name="branch[0][country]"><br><br>
+        
+        <label for="note">Note:</label><br>
+        <textarea id="note" name="note"></textarea><br><br>
+        
+        <label for="status">Status:</label><br>
+        <select id="status" name="status">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <!-- Add more options as needed -->
+        </select><br><br>
+        
+        <h3>Advised Roles</h3>
+        <!-- Repeatable section can be added with JavaScript for multiple roles -->
+        <div>
+            <label for="role">Role:</label><br>
+            <input type="text" id="role" name="advised_roles[0][role]"><br><br>
+            
+            <label for="date_collected">Date Collected:</label><br>
+            <input type="date" id="date_collected" name="advised_roles[0][date_collected]"><br><br>
+            
+            <label for="perm_casual">Permanent/Casual:</label><br>
+            <select id="perm_casual" name="advised_roles[0][perm_casual]">
+                <option value="permanent">Permanent</option>
+                <option value="casual">Casual</option>
+            </select><br><br>
+        </div>
+        
+        <h3>Deal Information</h3>
+        <div>
+            <label for="deal_role">Role:</label><br>
+            <input type="text" id="deal_role" name="deal[0][role]"><br><br>
+            
+            <label for="amount">Amount:</label><br>
+            <input type="number" id="amount" name="deal[0][amount]" step="0.01"><br><br>
+            
+            <label for="close_date">Close Date:</label><br>
+            <input type="date" id="close_date" name="deal[0][close_date]"><br><br>
+            
+            <label for="deal_status">Status:</label><br>
+            <select id="deal_status" name="deal[0][status]">
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
+                <!-- Add more options as needed -->
+            </select><br><br>
+        </div>
+        
+        <label for="follow_up">Follow Up Date:</label><br>
+        <input type="date" id="follow_up" name="follow_up"><br><br>
+        
+        <input type="submit" value="Add Contact">
+    </form>
+</body>
+</html>

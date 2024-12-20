@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Company</title>
+</head>
+<body>
+    <h1>Edit Company</h1>
+    <form action="/edit_company" method="post">
+        <input type="hidden" id="company_id" name="_id" value="{{company_id}}">
+        <input type="hidden" id="company_rev" name="_rev" value="{{company_rev}}">
+        
+        <label for="company_name">Company Name:</label><br>
+        <input type="text" id="company_name" name="company_name" value="{{company_name}}" required><br><br>
+        
+        <!-- You can add more fields here as needed -->
+        
+        <input type="submit" value="Update Company">
+    </form>
+</body>
+</html>
