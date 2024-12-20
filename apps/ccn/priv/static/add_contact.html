@@ -10,6 +10,36 @@
         }
     </style>
     <script>
+        // Function to add a new branch
+        function addBranch() {
+            const container = document.getElementById('branch_container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <hr>
+                <label for="branch[${index}][street1]">Street 1:</label><br>
+                <input type="text" id="branch[${index}][street1]" name="branch[${index}][street1]"><br><br>
+                
+                <label for="branch[${index}][street2]">Street 2:</label><br>
+                <input type="text" id="branch[${index}][street2]" name="branch[${index}][street2]"><br><br>
+                
+                <label for="branch[${index}][suburb]">Suburb:</label><br>
+                <input type="text" id="branch[${index}][suburb]" name="branch[${index}][suburb]"><br><br>
+                
+                <label for="branch[${index}][state]">State:</label><br>
+                <input type="text" id="branch[${index}][state]" name="branch[${index}][state]"><br><br>
+                
+                <label for="branch[${index}][post_code]">Post Code:</label><br>
+                <input type="text" id="branch[${index}][post_code]" name="branch[${index}][post_code]"><br><br>
+                
+                <label for="branch[${index}][country]">Country:</label><br>
+                <input type="text" id="branch[${index}][country]" name="branch[${index}][country]"><br><br>
+                
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            `;
+            container.appendChild(div);
+        }
+
         // Function to add a new advised role
         function addAdvisedRole() {
             const container = document.getElementById('advised_roles_container');
@@ -62,31 +92,15 @@
             container.appendChild(div);
         }
 
-        // Function to add a new branch
-        function addBranch() {
-            const container = document.getElementById('branch_container');
+        // Function to add a new email
+        function addEmail() {
+            const container = document.getElementById('email_container');
             const index = container.children.length;
             const div = document.createElement('div');
             div.innerHTML = `
                 <hr>
-                <label for="branch[${index}][street1]">Street 1:</label><br>
-                <input type="text" id="branch[${index}][street1]" name="branch[${index}][street1]"><br><br>
-                
-                <label for="branch[${index}][street2]">Street 2:</label><br>
-                <input type="text" id="branch[${index}][street2]" name="branch[${index}][street2]"><br><br>
-                
-                <label for="branch[${index}][suburb]">Suburb:</label><br>
-                <input type="text" id="branch[${index}][suburb]" name="branch[${index}][suburb]"><br><br>
-                
-                <label for="branch[${index}][state]">State:</label><br>
-                <input type="text" id="branch[${index}][state]" name="branch[${index}][state]"><br><br>
-                
-                <label for="branch[${index}][post_code]">Post Code:</label><br>
-                <input type="text" id="branch[${index}][post_code]" name="branch[${index}][post_code]"><br><br>
-                
-                <label for="branch[${index}][country]">Country:</label><br>
-                <input type="text" id="branch[${index}][country]" name="branch[${index}][country]"><br><br>
-                
+                <label for="email[${index}]">Email:</label><br>
+                <input type="email" id="email[${index}]" name="email[${index}]" required><br><br>
                 <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
             `;
             container.appendChild(div);
@@ -110,8 +124,14 @@
         <label for="type">Type:</label><br>
         <input type="text" id="type" name="type"><br><br>
         
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
+        <h3>Emails</h3>
+        <div id="email_container">
+            <div>
+                <label for="email[0]">Email:</label><br>
+                <input type="email" id="email[0]" name="email[0]" required><br><br>
+            </div>
+        </div>
+        <button type="button" onclick="addEmail()">+ Add Another Email</button><br><br>
         
         <label for="phone_number">Phone Number:</label><br>
         <input type="tel" id="phone_number" name="phone_number"><br><br>
