@@ -5,7 +5,10 @@
   {mod, {ccn_app, []}},
   {applications,
    [kernel,
-    stdlib
+    stdlib,
+    embe,
+    bcrypte,
+    cowboy
    ]},
   {env,[]},
   {modules, []},
