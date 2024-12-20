@@ -110,7 +110,12 @@
 <body>
     <h1>Add New Contact</h1>
     <form action="/add_contact" method="post">
-        <input type="hidden" name="company_id" value="{{company_id}}">
+        <label for="company_id">Company:</label><br>
+        <select id="company_id" name="company_id" required>
+            {{#each companies}}
+                <option value="{{this._id}}">{{this.company_name}}</option>
+            {{/each}}
+        </select><br><br>
         
         <label for="first_name">First Name:</label><br>
         <input type="text" id="first_name" name="first_name" required><br><br>

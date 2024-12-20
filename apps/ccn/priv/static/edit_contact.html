@@ -110,6 +110,13 @@
 <body>
     <h1>Edit Contact</h1>
     <form action="/edit_contact" method="post">
+        <label for="company_id">Company:</label><br>
+        <select id="company_id" name="company_id" required>
+            {{#each companies}}
+                <option value="{{this._id}}" {{#if (eq this._id ../company_id)}}selected{{/if}}>{{this.company_name}}</option>
+            {{/each}}
+        </select><br><br>
+        
         <input type="hidden" name="_id" value="{{contact_id}}">
         <input type="hidden" name="company_id" value="{{company_id}}">
         <input type="hidden" name="_rev" value="{{contact_rev}}">
