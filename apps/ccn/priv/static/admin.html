@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>管理者管理ページ</title>
+    <title>Admin Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,7 +36,7 @@
             padding: 5px 10px;
             cursor: pointer;
         }
-        /* 新規ユーザー追加後のクレデンシャル表示用スタイル */
+        /* Style for displaying credentials after adding a new user */
         #new-user-credentials {
             margin-top: 20px;
             padding: 15px;
@@ -63,7 +63,7 @@
             border: none;
             border-radius: 3px;
         }
-        /* モーダルダイアログのスタイル */
+        /* Style for modal dialog */
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -112,109 +112,84 @@
     </style>
 </head>
 <body>
-    <h1>管理者管理ページ</h1>
+    <h1>Admin Dashboard</h1>
 
     <section id="user-management">
-        <h2>ユーザー管理</h2>
+        <h2>User Management</h2>
         
-        <h3>ユーザー一覧</h3>
+        <h3>User List</h3>
         <table id="users-table">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>作成日時</th>
-                    <th>管理者</th>
-                    <th>アクション</th>
+                    <th>Created At</th>
+                    <th>Administrator</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- ユーザーリストがここに表示されます -->
+                <!-- User list will be displayed here -->
             </tbody>
         </table>
 
-        <h3>新規ユーザーの追加</h3>
+        <h3>Add New User</h3>
         <form id="add-user-form">
-            <input type="text" id="new-user-id" placeholder="ユーザーID" required>
+            <input type="text" id="new-user-id" placeholder="User ID" required>
             <label>
-                <input type="checkbox" id="new-user-is-admin"> 管理者
+                <input type="checkbox" id="new-user-is-admin"> Administrator
             </label>
-            <button type="submit">追加</button>
+            <button type="submit">Add</button>
         </form>
 
-        <!-- 新規ユーザー追加後のクレデンシャル表示 -->
+        <!-- Display credentials after adding a new user -->
         <div id="new-user-credentials">
-            <h3>新規ユーザーのクレデンシャル</h3>
+            <h3>New User Credentials</h3>
             <div class="credential">
-                <span>ユーザーID:</span>
+                <span>User ID:</span>
                 <span id="credential-user-id"></span>
-                <button class="copy-button" onclick="copyToClipboard('credential-user-id')">コピー</button>
+                <button class="copy-button" onclick="copyToClipboard('credential-user-id')">Copy</button>
             </div>
             <div class="credential">
-                <span>初期パスワード:</span>
+                <span>Initial Password:</span>
                 <span id="credential-password"></span>
-                <button class="copy-button" onclick="copyToClipboard('credential-password')">コピー</button>
+                <button class="copy-button" onclick="copyToClipboard('credential-password')">Copy</button>
             </div>
         </div>
     </section>
 
-    <section id="ip-management">
-        <h2>IP管理</h2>
-        
-        <h3>IPアドレス一覧</h3>
-        <table id="ips-table">
-            <thead>
-                <tr>
-                    <th>IPアドレス</th>
-                    <th>メモ</th>
-                    <th>作成日時</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- IPアドレスリストがここに表示されます -->
-            </tbody>
-        </table>
-
-        <h3>新規IPアドレスの追加</h3>
-        <form id="add-ip-form">
-            <input type="text" id="new-ip-address" placeholder="IPアドレス" required>
-            <input type="text" id="new-ip-memo" placeholder="メモ">
-            <button type="submit">追加</button>
-        </form>
-    </section>
-
-    <!-- パスワード変更モーダル -->
+    <!-- Password Change Modal -->
     <div id="password-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <h3>パスワード変更</h3>
+            <h3>Change Password</h3>
             <form id="change-password-form" class="modal-form">
                 <input type="hidden" id="change-user-id">
-                <label for="new-password">新しいパスワード:</label>
-                <input type="password" id="new-password" placeholder="新しいパスワード" required>
-                <label for="confirm-password">パスワード確認:</label>
-                <input type="password" id="confirm-password" placeholder="新しいパスワードを再入力" required>
-                <button type="submit">変更</button>
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" placeholder="New Password" required>
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" placeholder="Re-enter new password" required>
+                <button type="submit">Change</button>
             </form>
         </div>
     </div>
 
     <script>
 
-        // エラーハンドリング関数
+        // Error handling function
         function handleError(response) {
             if (response.status === 403) {
-                alert('権限が不足しています。管理者権限が必要です。');
+                alert("Insufficient permissions. Administrator privileges are required.");
                 window.location.href = 'index.html';
-                alert('トップページにリダイレクトします。');
+                alert("Redirecting to the homepage.");
                 return null;
             } else if (!response.ok) {
-                alert('予期せぬエラーが発生しました。');
+                alert("An unexpected error occurred.");
                 return null;
             }
             return response.json();
         }
 
-        // ユーザー一覧の取得と表示
+        // Fetch and display user list
         function fetchUsers() {
             fetch('/ccn/api/v1/users', {
                 method: 'GET',
@@ -234,7 +209,7 @@
 
                         const tdCreatedAt = document.createElement('td');
                         const createdAt = new Date(user.created_at);
-                        tdCreatedAt.textContent = createdAt.toLocaleString('ja-JP', {
+                        tdCreatedAt.textContent = createdAt.toLocaleString('en-US', {
                             year: 'numeric',
                             month: '2-digit',
                             day: '2-digit',
@@ -245,12 +220,12 @@
                         tr.appendChild(tdCreatedAt);
 
                         const tdIsAdmin = document.createElement('td');
-                        tdIsAdmin.textContent = user.is_admin ? 'はい' : 'いいえ';
+                        tdIsAdmin.textContent = user.is_admin ? 'Yes' : 'No';
                         tr.appendChild(tdIsAdmin);
 
                         const tdAction = document.createElement('td');
                         const changePwdButton = document.createElement('button');
-                        changePwdButton.textContent = 'パスワード変更';
+                        changePwdButton.textContent = 'Change Password';
                         changePwdButton.onclick = () => openPasswordModal(user.id);
                         tdAction.appendChild(changePwdButton);
                         tr.appendChild(tdAction);
@@ -264,14 +239,14 @@
             });
         }
 
-        // 新規ユーザーの追加
+        // Add new user
         document.getElementById('add-user-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const userId = document.getElementById('new-user-id').value.trim();
             const isAdmin = document.getElementById('new-user-is-admin').checked;
 
             if (userId === '') {
-                alert('ユーザーIDを入力してください。');
+                alert("Please enter a user ID.");
                 return;
             }
 
@@ -289,7 +264,7 @@
             .then(response => handleError(response))
             .then(data => {
                 if (data && data.success) {
-                    // クレデンシャルを表示
+                    // Display credentials
                     document.getElementById('credential-user-id').textContent = userId;
                     document.getElementById('credential-password').textContent = data.passwd;
                     document.getElementById('new-user-credentials').style.display = 'block';
@@ -297,7 +272,7 @@
                     fetchUsers();
                     document.getElementById('add-user-form').reset();
                 } else if (data) {
-                    alert('ユーザーの追加に失敗しました。');
+                    alert("Failed to add user.");
                 }
             })
             .catch(error => {
@@ -305,19 +280,19 @@
             });
         });
 
-        // パスワード変更モーダルを開く
+        // Open password change modal
         function openPasswordModal(userId) {
             document.getElementById('password-modal').style.display = 'block';
             document.getElementById('change-user-id').value = userId;
             document.getElementById('change-password-form').reset();
         }
 
-        // パスワード変更モーダルを閉じる
+        // Close password change modal
         function closeModal() {
             document.getElementById('password-modal').style.display = 'none';
         }
 
-        // 外部クリックでモーダルを閉じる
+        // Close modal on outside click
         window.onclick = function(event) {
             const modal = document.getElementById('password-modal');
             if (event.target == modal) {
@@ -325,7 +300,7 @@
             }
         }
 
-        // パスワード変更フォームの送信
+        // Submit password change form
         document.getElementById('change-password-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const userId = document.getElementById('change-user-id').value;
@@ -333,12 +308,12 @@
             const confirmPassword = document.getElementById('confirm-password').value;
 
             if (newPassword === '' || confirmPassword === '') {
-                alert('パスワードを入力してください。');
+                alert("Please enter a password.");
                 return;
             }
 
             if (newPassword !== confirmPassword) {
-                alert('パスワードが一致しません。再度入力してください。');
+                alert("Passwords do not match. Please re-enter.");
                 return;
             }
 
@@ -356,10 +331,10 @@
             .then(response => handleError(response))
             .then(data => {
                 if (data && data.success) {
-                    alert('パスワードが更新されました。');
+                    alert("Password has been updated.");
                     closeModal();
                 } else if (data) {
-                    alert('パスワードの更新に失敗しました。');
+                    alert("Failed to update password.");
                 }
             })
             .catch(error => {
@@ -367,100 +342,19 @@
             });
         });
 
-        // IPアドレス一覧の取得と表示
-        function fetchIPs() {
-            fetch('/ccn/api/v1/ip', {
-                method: 'GET',
-                credentials: 'same-origin'
-            })
-            .then(response => handleError(response))
-            .then(data => {
-                if (data && data.success && Array.isArray(data.ip_list)) {
-                    const tbody = document.querySelector('#ips-table tbody');
-                    tbody.innerHTML = '';
-                    data.ip_list.forEach(ip => {
-                        const tr = document.createElement('tr');
-
-                        const tdIp = document.createElement('td');
-                        tdIp.textContent = ip.ip;
-                        tr.appendChild(tdIp);
-
-                        const tdMemo = document.createElement('td');
-                        tdMemo.textContent = ip.memo || '';
-                        tr.appendChild(tdMemo);
-
-                        const tdCreatedAt = document.createElement('td');
-                        const createdAt = new Date(ip.created_at);
-                        tdCreatedAt.textContent = createdAt.toLocaleString('ja-JP', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit'
-                        });
-                        tr.appendChild(tdCreatedAt);
-
-                        tbody.appendChild(tr);
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching IPs:', error);
-            });
-        }
-
-        // 新規IPアドレスの追加
-        document.getElementById('add-ip-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const ip = document.getElementById('new-ip-address').value.trim();
-            const memo = document.getElementById('new-ip-memo').value.trim();
-
-            if (ip === '') {
-                alert('IPアドレスを入力してください。');
-                return;
-            }
-
-            fetch('/ccn/api/v1/ip', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify({
-                    ip: ip,
-                    memo: memo
-                })
-            })
-            .then(response => handleError(response))
-            .then(data => {
-                if (data && data.success) {
-                    alert('IPアドレスが追加されました。');
-                    fetchIPs();
-                    document.getElementById('add-ip-form').reset();
-                } else if (data) {
-                    alert('IPアドレスの追加に失敗しました。');
-                }
-            })
-            .catch(error => {
-                console.error('Error adding IP address:', error);
-            });
-        });
-
-        // クリップボードにテキストをコピーする関数
+        // Function to copy text to clipboard
         function copyToClipboard(elementId) {
             const text = document.getElementById(elementId).textContent;
             navigator.clipboard.writeText(text).then(() => {
-                alert('コピーしました: ' + text);
+                alert("Copied: " + text);
             }).catch(err => {
-                console.error('クリップボードへのコピーに失敗しました: ', err);
+                console.error("Failed to copy to clipboard: ", err);
             });
         }
 
-        // ページロード時にデータを取得
+        // Fetch data on page load
         window.onload = function() {
             fetchUsers();
-            fetchIPs();
         };
     </script>
 </body>
