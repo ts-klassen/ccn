@@ -157,31 +157,6 @@
         </div>
     </section>
 
-    <section id="ip-management">
-        <h2>IP Management</h2>
-        
-        <h3>IP Address List</h3>
-        <table id="ips-table">
-            <thead>
-                <tr>
-                    <th>IP Address</th>
-                    <th>Memo</th>
-                    <th>Created At</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- IP address list will be displayed here -->
-            </tbody>
-        </table>
-
-        <h3>Add New IP Address</h3>
-        <form id="add-ip-form">
-            <input type="text" id="new-ip-address" placeholder="IP Address" required>
-            <input type="text" id="new-ip-memo" placeholder="Memo">
-            <button type="submit">Add</button>
-        </form>
-    </section>
-
     <!-- Password Change Modal -->
     <div id="password-modal" class="modal">
         <div class="modal-content">
@@ -367,86 +342,6 @@
             });
         });
 
-        // Fetch and display IP address list
-        function fetchIPs() {
-            fetch('/ccn/api/v1/ip', {
-                method: 'GET',
-                credentials: 'same-origin'
-            })
-            .then(response => handleError(response))
-            .then(data => {
-                if (data && data.success && Array.isArray(data.ip_list)) {
-                    const tbody = document.querySelector('#ips-table tbody');
-                    tbody.innerHTML = '';
-                    data.ip_list.forEach(ip => {
-                        const tr = document.createElement('tr');
-
-                        const tdIp = document.createElement('td');
-                        tdIp.textContent = ip.ip;
-                        tr.appendChild(tdIp);
-
-                        const tdMemo = document.createElement('td');
-                        tdMemo.textContent = ip.memo || '';
-                        tr.appendChild(tdMemo);
-
-                        const tdCreatedAt = document.createElement('td');
-                        const createdAt = new Date(ip.created_at);
-                        tdCreatedAt.textContent = createdAt.toLocaleString('en-US', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit'
-                        });
-                        tr.appendChild(tdCreatedAt);
-
-                        tbody.appendChild(tr);
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching IPs:', error);
-            });
-        }
-
-        // Add new IP address
-        document.getElementById('add-ip-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const ip = document.getElementById('new-ip-address').value.trim();
-            const memo = document.getElementById('new-ip-memo').value.trim();
-
-            if (ip === '') {
-                alert("Please enter an IP address.");
-                return;
-            }
-
-            fetch('/ccn/api/v1/ip', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'same-origin',
-                body: JSON.stringify({
-                    ip: ip,
-                    memo: memo
-                })
-            })
-            .then(response => handleError(response))
-            .then(data => {
-                if (data && data.success) {
-                    alert("IP address has been added.");
-                    fetchIPs();
-                    document.getElementById('add-ip-form').reset();
-                } else if (data) {
-                    alert("Failed to add IP address.");
-                }
-            })
-            .catch(error => {
-                console.error('Error adding IP address:', error);
-            });
-        });
-
         // Function to copy text to clipboard
         function copyToClipboard(elementId) {
             const text = document.getElementById(elementId).textContent;
@@ -460,7 +355,6 @@
         // Fetch data on page load
         window.onload = function() {
             fetchUsers();
-            fetchIPs();
         };
     </script>
 </body>
