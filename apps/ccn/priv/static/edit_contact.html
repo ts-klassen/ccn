@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Contact</title>
+    <style>
+        .remove-button {
+            margin-top: 25px;
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        // Function to add a new branch
+        function addBranch() {
+            const container = document.getElementById('branch_container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <hr>
+                <label for="branch[${index}][street1]">Street 1:</label><br>
+                <input type="text" id="branch[${index}][street1]" name="branch[${index}][street1]" value=""><br><br>
+                
+                <label for="branch[${index}][street2]">Street 2:</label><br>
+                <input type="text" id="branch[${index}][street2]" name="branch[${index}][street2]" value=""><br><br>
+                
+                <label for="branch[${index}][suburb]">Suburb:</label><br>
+                <input type="text" id="branch[${index}][suburb]" name="branch[${index}][suburb]" value=""><br><br>
+                
+                <label for="branch[${index}][state]">State:</label><br>
+                <input type="text" id="branch[${index}][state]" name="branch[${index}][state]" value=""><br><br>
+                
+                <label for="branch[${index}][post_code]">Post Code:</label><br>
+                <input type="text" id="branch[${index}][post_code]" name="branch[${index}][post_code]" value=""><br><br>
+                
+                <label for="branch[${index}][country]">Country:</label><br>
+                <input type="text" id="branch[${index}][country]" name="branch[${index}][country]" value=""><br><br>
+                
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            `;
+            container.appendChild(div);
+        }
+
+        // Function to add a new advised role
+        function addAdvisedRole() {
+            const container = document.getElementById('advised_roles_container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <hr>
+                <label for="advised_roles[${index}][role]">Role:</label><br>
+                <input type="text" id="advised_roles[${index}][role]" name="advised_roles[${index}][role]" value=""><br><br>
+                
+                <label for="advised_roles[${index}][date_collected]">Date Collected:</label><br>
+                <input type="date" id="advised_roles[${index}][date_collected]" name="advised_roles[${index}][date_collected]" value=""><br><br>
+                
+                <label for="advised_roles[${index}][perm_casual]">Permanent/Casual:</label><br>
+                <select id="advised_roles[${index}][perm_casual]" name="advised_roles[${index}][perm_casual]">
+                    <option value="permanent">Permanent</option>
+                    <option value="casual">Casual</option>
+                </select><br><br>
+                
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            `;
+            container.appendChild(div);
+        }
+
+        // Function to add a new deal
+        function addDeal() {
+            const container = document.getElementById('deal_container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <hr>
+                <label for="deal[${index}][role]">Role:</label><br>
+                <input type="text" id="deal[${index}][role]" name="deal[${index}][role]" value=""><br><br>
+                
+                <label for="deal[${index}][amount]">Amount:</label><br>
+                <input type="number" id="deal[${index}][amount]" name="deal[${index}][amount]" step="0.01" value=""><br><br>
+                
+                <label for="deal[${index}][close_date]">Close Date:</label><br>
+                <input type="date" id="deal[${index}][close_date]" name="deal[${index}][close_date]" value=""><br><br>
+                
+                <label for="deal[${index}][status]">Status:</label><br>
+                <select id="deal[${index}][status]" name="deal[${index}][status]">
+                    <option value="open">Open</option>
+                    <option value="closed">Closed</option>
+                    <!-- Add more options as needed -->
+                </select><br><br>
+                
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            `;
+            container.appendChild(div);
+        }
+
+        // Function to add a new email
+        function addEmail() {
+            const container = document.getElementById('email_container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <hr>
+                <label for="email[${index}]">Email:</label><br>
+                <input type="email" id="email[${index}]" name="email[${index}]" required><br><br>
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            `;
+            container.appendChild(div);
+        }
+    </script>
+</head>
+<body>
+    <h1>Edit Contact</h1>
+    <form action="/edit_contact" method="post">
+        <label for="company_id">Company:</label><br>
+        <select id="company_id" name="company_id" required>
+            {{#each companies}}
+                <option value="{{this._id}}" {{#if (eq this._id ../company_id)}}selected{{/if}}>{{this.company_name}}</option>
+            {{/each}}
+        </select><br><br>
+        
+        <input type="hidden" name="_id" value="{{contact_id}}">
+        <input type="hidden" name="company_id" value="{{company_id}}">
+        <input type="hidden" name="_rev" value="{{contact_rev}}">
+        
+        <label for="first_name">First Name:</label><br>
+        <input type="text" id="first_name" name="first_name" value="{{first_name}}" required><br><br>
+        
+        <label for="last_name">Last Name:</label><br>
+        <input type="text" id="last_name" name="last_name" value="{{last_name}}" required><br><br>
+        
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" value="{{title}}"><br><br>
+        
+        <label for="type">Type:</label><br>
+        <input type="text" id="type" name="type" value="{{type}}"><br><br>
+        
+        <h3>Emails</h3>
+        <div id="email_container">
+            {{#each email}}
+            <div>
+                <label for="email[{{@index}}]">Email:</label><br>
+                <input type="email" id="email[{{@index}}]" name="email[{{@index}}]" value="{{this}}" required><br><br>
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            </div>
+            {{/each}}
+        </div>
+        <button type="button" onclick="addEmail()">+ Add Another Email</button><br><br>
+        
+        <label for="phone_number">Phone Number:</label><br>
+        <input type="tel" id="phone_number" name="phone_number" value="{{phone_number}}"><br><br>
+        
+        <label for="mobile_number">Mobile Number:</label><br>
+        <input type="tel" id="mobile_number" name="mobile_number" value="{{mobile_number}}"><br><br>
+        
+        <h3>Branch Address</h3>
+        <div id="branch_container">
+            {{#each branch}}
+            <div>
+                <label for="branch[{{@index}}][street1]">Street 1:</label><br>
+                <input type="text" id="branch[{{@index}}][street1]" name="branch[{{@index}}][street1]" value="{{street1}}"><br><br>
+                
+                <label for="branch[{{@index}}][street2]">Street 2:</label><br>
+                <input type="text" id="branch[{{@index}}][street2]" name="branch[{{@index}}][street2]" value="{{street2}}"><br><br>
+                
+                <label for="branch[{{@index}}][suburb]">Suburb:</label><br>
+                <input type="text" id="branch[{{@index}}][suburb]" name="branch[{{@index}}][suburb]" value="{{suburb}}"><br><br>
+                
+                <label for="branch[{{@index}}][state]">State:</label><br>
+                <input type="text" id="branch[{{@index}}][state]" name="branch[{{@index}}][state]" value="{{state}}"><br><br>
+                
+                <label for="branch[{{@index}}][post_code]">Post Code:</label><br>
+                <input type="text" id="branch[{{@index}}][post_code]" name="branch[{{@index}}][post_code]" value="{{post_code}}"><br><br>
+                
+                <label for="branch[{{@index}}][country]">Country:</label><br>
+                <input type="text" id="branch[{{@index}}][country]" name="branch[{{@index}}][country]" value="{{country}}"><br><br>
+                
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            </div>
+            {{/each}}
+        </div>
+        <button type="button" onclick="addBranch()">+ Add Another Branch</button><br><br>
+        
+        <label for="note">Note:</label><br>
+        <textarea id="note" name="note">{{note}}</textarea><br><br>
+        
+        <label for="status">Status:</label><br>
+        <select id="status" name="status">
+            <option value="active" {{#if (eq status "active")}}selected{{/if}}>Active</option>
+            <option value="inactive" {{#if (eq status "inactive")}}selected{{/if}}>Inactive</option>
+            <!-- Add more options as needed -->
+        </select><br><br>
+        
+        <h3>Advised Roles</h3>
+        <div id="advised_roles_container">
+            {{#each advised_roles}}
+            <div>
+                <label for="advised_roles[{{@index}}][role]">Role:</label><br>
+                <input type="text" id="advised_roles[{{@index}}][role]" name="advised_roles[{{@index}}][role]" value="{{role}}"><br><br>
+                
+                <label for="advised_roles[{{@index}}][date_collected]">Date Collected:</label><br>
+                <input type="date" id="advised_roles[{{@index}}][date_collected]" name="advised_roles[{{@index}}][date_collected]" value="{{date_collected}}"><br><br>
+                
+                <label for="advised_roles[{{@index}}][perm_casual]">Permanent/Casual:</label><br>
+                <select id="advised_roles[{{@index}}][perm_casual]" name="advised_roles[{{@index}}][perm_casual]">
+                    <option value="permanent" {{#if (eq perm_casual "permanent")}}selected{{/if}}>Permanent</option>
+                    <option value="casual" {{#if (eq perm_casual "casual")}}selected{{/if}}>Casual</option>
+                </select><br><br>
+                
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            </div>
+            {{/each}}
+        </div>
+        <button type="button" onclick="addAdvisedRole()">+ Add Another Advised Role</button><br><br>
+        
+        <h3>Deal Information</h3>
+        <div id="deal_container">
+            {{#each deal}}
+            <div>
+                <label for="deal[{{@index}}][role]">Role:</label><br>
+                <input type="text" id="deal[{{@index}}][role]" name="deal[{{@index}}][role]" value="{{role}}"><br><br>
+                
+                <label for="deal[{{@index}}][amount]">Amount:</label><br>
+                <input type="number" id="deal[{{@index}}][amount]" name="deal[{{@index}}][amount]" step="0.01" value="{{amount}}"><br><br>
+                
+                <label for="deal[{{@index}}][close_date]">Close Date:</label><br>
+                <input type="date" id="deal[{{@index}}][close_date]" name="deal[{{@index}}][close_date]" value="{{close_date}}"><br><br>
+                
+                <label for="deal[{{@index}}][status]">Status:</label><br>
+                <select id="deal[{{@index}}][status]" name="deal[{{@index}}][status]">
+                    <option value="open" {{#if (eq status "open")}}selected{{/if}}>Open</option>
+                    <option value="closed" {{#if (eq status "closed")}}selected{{/if}}>Closed</option>
+                    <!-- Add more options as needed -->
+                </select><br><br>
+                
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            </div>
+            {{/each}}
+        </div>
+        <button type="button" onclick="addDeal()">+ Add Another Deal</button><br><br>
+        
+        <label for="follow_up">Follow Up Date:</label><br>
+        <input type="date" id="follow_up" name="follow_up" value="{{follow_up}}"><br><br>
+        
+        <input type="submit" value="Update Contact">
+    </form>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Contact</title>
+    <style>
+        .remove-button {
+            margin-top: 25px;
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        // Function to add a new branch
+        function addBranch() {
+            const container = document.getElementById('branch_container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <hr>
+                <label for="branch[${index}][street1]">Street 1:</label><br>
+                <input type="text" id="branch[${index}][street1]" name="branch[${index}][street1]"><br><br>
+                
+                <label for="branch[${index}][street2]">Street 2:</label><br>
+                <input type="text" id="branch[${index}][street2]" name="branch[${index}][street2]"><br><br>
+                
+                <label for="branch[${index}][suburb]">Suburb:</label><br>
+                <input type="text" id="branch[${index}][suburb]" name="branch[${index}][suburb]"><br><br>
+                
+                <label for="branch[${index}][state]">State:</label><br>
+                <input type="text" id="branch[${index}][state]" name="branch[${index}][state]"><br><br>
+                
+                <label for="branch[${index}][post_code]">Post Code:</label><br>
+                <input type="text" id="branch[${index}][post_code]" name="branch[${index}][post_code]"><br><br>
+                
+                <label for="branch[${index}][country]">Country:</label><br>
+                <input type="text" id="branch[${index}][country]" name="branch[${index}][country]"><br><br>
+                
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            `;
+            container.appendChild(div);
+        }
+
+        // Function to add a new advised role
+        function addAdvisedRole() {
+            const container = document.getElementById('advised_roles_container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <hr>
+                <label for="advised_roles[${index}][role]">Role:</label><br>
+                <input type="text" id="advised_roles[${index}][role]" name="advised_roles[${index}][role]"><br><br>
+                
+                <label for="advised_roles[${index}][date_collected]">Date Collected:</label><br>
+                <input type="date" id="advised_roles[${index}][date_collected]" name="advised_roles[${index}][date_collected]"><br><br>
+                
+                <label for="advised_roles[${index}][perm_casual]">Permanent/Casual:</label><br>
+                <select id="advised_roles[${index}][perm_casual]" name="advised_roles[${index}][perm_casual]">
+                    <option value="permanent">Permanent</option>
+                    <option value="casual">Casual</option>
+                </select><br><br>
+                
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            `;
+            container.appendChild(div);
+        }
+
+        // Function to add a new deal
+        function addDeal() {
+            const container = document.getElementById('deal_container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <hr>
+                <label for="deal[${index}][role]">Role:</label><br>
+                <input type="text" id="deal[${index}][role]" name="deal[${index}][role]"><br><br>
+                
+                <label for="deal[${index}][amount]">Amount:</label><br>
+                <input type="number" id="deal[${index}][amount]" name="deal[${index}][amount]" step="0.01"><br><br>
+                
+                <label for="deal[${index}][close_date]">Close Date:</label><br>
+                <input type="date" id="deal[${index}][close_date]" name="deal[${index}][close_date]"><br><br>
+                
+                <label for="deal[${index}][status]">Status:</label><br>
+                <select id="deal[${index}][status]" name="deal[${index}][status]">
+                    <option value="open">Open</option>
+                    <option value="closed">Closed</option>
+                    <!-- Add more options as needed -->
+                </select><br><br>
+                
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            `;
+            container.appendChild(div);
+        }
+
+        // Function to add a new email
+        function addEmail() {
+            const container = document.getElementById('email_container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <hr>
+                <label for="email[${index}]">Email:</label><br>
+                <input type="email" id="email[${index}]" name="email[${index}]" required><br><br>
+                <span class="remove-button" onclick="this.parentElement.remove()">Remove</span>
+            `;
+            container.appendChild(div);
+        }
+    </script>
+</head>
+<body>
+    <h1>Add New Contact</h1>
+    <form action="/add_contact" method="post">
+        <label for="company_id">Company:</label><br>
+        <select id="company_id" name="company_id" required>
+            {{#each companies}}
+                <option value="{{this._id}}">{{this.company_name}}</option>
+            {{/each}}
+        </select><br><br>
+        
+        <label for="first_name">First Name:</label><br>
+        <input type="text" id="first_name" name="first_name" required><br><br>
+        
+        <label for="last_name">Last Name:</label><br>
+        <input type="text" id="last_name" name="last_name" required><br><br>
+        
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br><br>
+        
+        <label for="type">Type:</label><br>
+        <input type="text" id="type" name="type"><br><br>
+        
+        <h3>Emails</h3>
+        <div id="email_container">
+            <div>
+                <label for="email[0]">Email:</label><br>
+                <input type="email" id="email[0]" name="email[0]" required><br><br>
+            </div>
+        </div>
+        <button type="button" onclick="addEmail()">+ Add Another Email</button><br><br>
+        
+        <label for="phone_number">Phone Number:</label><br>
+        <input type="tel" id="phone_number" name="phone_number"><br><br>
+        
+        <label for="mobile_number">Mobile Number:</label><br>
+        <input type="tel" id="mobile_number" name="mobile_number"><br><br>
+        
+        <h3>Branch Address</h3>
+        <div id="branch_container">
+            <div>
+                <label for="branch[0][street1]">Street 1:</label><br>
+                <input type="text" id="branch[0][street1]" name="branch[0][street1]"><br><br>
+                
+                <label for="branch[0][street2]">Street 2:</label><br>
+                <input type="text" id="branch[0][street2]" name="branch[0][street2]"><br><br>
+                
+                <label for="branch[0][suburb]">Suburb:</label><br>
+                <input type="text" id="branch[0][suburb]" name="branch[0][suburb]"><br><br>
+                
+                <label for="branch[0][state]">State:</label><br>
+                <input type="text" id="branch[0][state]" name="branch[0][state]"><br><br>
+                
+                <label for="branch[0][post_code]">Post Code:</label><br>
+                <input type="text" id="branch[0][post_code]" name="branch[0][post_code]"><br><br>
+                
+                <label for="branch[0][country]">Country:</label><br>
+                <input type="text" id="branch[0][country]" name="branch[0][country]"><br><br>
+            </div>
+        </div>
+        <button type="button" onclick="addBranch()">+ Add Another Branch</button><br><br>
+        
+        <label for="note">Note:</label><br>
+        <textarea id="note" name="note"></textarea><br><br>
+        
+        <label for="status">Status:</label><br>
+        <select id="status" name="status">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <!-- Add more options as needed -->
+        </select><br><br>
+        
+        <h3>Advised Roles</h3>
+        <div id="advised_roles_container">
+            <div>
+                <label for="advised_roles[0][role]">Role:</label><br>
+                <input type="text" id="advised_roles[0][role]" name="advised_roles[0][role]"><br><br>
+                
+                <label for="advised_roles[0][date_collected]">Date Collected:</label><br>
+                <input type="date" id="advised_roles[0][date_collected]" name="advised_roles[0][date_collected]"><br><br>
+                
+                <label for="advised_roles[0][perm_casual]">Permanent/Casual:</label><br>
+                <select id="advised_roles[0][perm_casual]" name="advised_roles[0][perm_casual]">
+                    <option value="permanent">Permanent</option>
+                    <option value="casual">Casual</option>
+                </select><br><br>
+            </div>
+        </div>
+        <button type="button" onclick="addAdvisedRole()">+ Add Another Advised Role</button><br><br>
+        
+        <h3>Deal Information</h3>
+        <div id="deal_container">
+            <div>
+                <label for="deal[0][role]">Role:</label><br>
+                <input type="text" id="deal[0][role]" name="deal[0][role]"><br><br>
+                
+                <label for="deal[0][amount]">Amount:</label><br>
+                <input type="number" id="deal[0][amount]" name="deal[0][amount]" step="0.01"><br><br>
+                
+                <label for="deal[0][close_date]">Close Date:</label><br>
+                <input type="date" id="deal[0][close_date]" name="deal[0][close_date]"><br><br>
+                
+                <label for="deal[0][status]">Status:</label><br>
+                <select id="deal[0][status]" name="deal[0][status]">
+                    <option value="open">Open</option>
+                    <option value="closed">Closed</option>
+                    <!-- Add more options as needed -->
+                </select><br><br>
+            </div>
+        </div>
+        <button type="button" onclick="addDeal()">+ Add Another Deal</button><br><br>
+        
+        <label for="follow_up">Follow Up Date:</label><br>
+        <input type="date" id="follow_up" name="follow_up"><br><br>
+        
+        <input type="submit" value="Add Contact">
+    </form>
+</body>
+</html>
